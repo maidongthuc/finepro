@@ -23,6 +23,8 @@ COPY templates/ templates/
 COPY static/ static/
 COPY uploads/ uploads/
 COPY images/ images/
+COPY cert.pem .
+COPY key.pem .
 
 EXPOSE 5050
 
