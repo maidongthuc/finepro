@@ -16,8 +16,8 @@ if not os.path.exists(IMAGES_FOLDER):
     os.makedirs(IMAGES_FOLDER)
 
 # API endpoints
-API_FIRE_EXTINGUISHER = 'http://18.234.31.162:8888/predict_interface_fire_extinguisher/'
-API_GAUGE = 'http://18.234.31.162:8888/predict_clock_fire_extinguisher/'
+API_FIRE_EXTINGUISHER = 'http://35.174.6.223:8888/predict_interface_fire_extinguisher/'
+API_GAUGE = 'http://35.174.6.223:8888/predict_clock_fire_extinguisher/'
 
 @app.route('/')
 def index():
