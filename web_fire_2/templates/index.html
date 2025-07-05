@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phân tích thiết bị</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Phân tích thiết bị</h1>
+        </header>
+
+        <!-- Tab Navigation -->
+        <div class="tab-container">
+            <button class="tab-button active" onclick="showTab('fire-extinguisher')">
+                🧯 Bình chữa cháy
+            </button>
+            <button class="tab-button" onclick="showTab('gauge')">
+                ⏱️ Đồng hồ
+            </button>
+        </div>
+
+        <!-- Fire Extinguisher Tab -->
+        <div id="fire-extinguisher" class="tab-content active">
+            <div class="analysis-section">
+                <h2>📷 Phân tích bình chữa cháy</h2>
+                
+                <div class="camera-section">
+                    <video id="fire-video" class="camera-preview" autoplay playsinline style="display: none;"></video>
+                    <canvas id="fire-canvas" style="display: none;"></canvas>
+                    <img id="fire-preview" class="image-preview" style="display: none;" alt="Ảnh đã chụp">
+                    
+                    <div class="camera-controls">
+                        <button id="fire-camera-btn" class="camera-btn" onclick="startCamera('fire')">
+                            📷 Chụp ảnh bình chữa cháy
+                        </button>
+                        <button id="fire-upload-btn" class="upload-btn" onclick="triggerFileUpload('fire')">
+                            📁 Tải ảnh từ thiết bị
+                        </button>
+                        <input type="file" id="fire-file-input" accept="image/*" style="display: none;" onchange="handleFileUpload('fire', this)">
+                        <button id="fire-capture-btn" class="capture-btn" onclick="captureImage('fire')" style="display: none;">
+                            📸 Chụp
+                        </button>
+                        <button id="fire-retake-btn" class="retake-btn" onclick="retakeImage('fire')" style="display: none;">
+                            🔄 Chụp lại
+                        </button>
+                    </div>
+                </div>
+
+                <button id="fire-analyze-btn" class="analyze-btn" onclick="analyzeImage('fire')" style="display: none;">
+                    🔍 Phân tích bình chữa cháy
+                </button>
+
+                <div id="fire-loading" class="loading" style="display: none;">
+                    <div class="spinner"></div>
+                    <p>Đang phân tích...</p>
+                </div>
+
+                <div id="fire-results" class="results" style="display: none;"></div>
+            </div>
+        </div>
+
+        <!-- Gauge Tab -->
+        <div id="gauge" class="tab-content">
+            <div class="analysis-section">
+                <h2>📷 Phân tích đồng hồ</h2>
+                
+                <div class="camera-section">
+                    <video id="gauge-video" class="camera-preview" autoplay playsinline style="display: none;"></video>
+                    <canvas id="gauge-canvas" style="display: none;"></canvas>
+                    <img id="gauge-preview" class="image-preview" style="display: none;" alt="Ảnh đã chụp">
+                    
+                    <div class="camera-controls">
+                        <button id="gauge-camera-btn" class="camera-btn" onclick="startCamera('gauge')">
+                            📷 Chụp ảnh đồng hồ
+                        </button>
+                        <button id="gauge-upload-btn" class="upload-btn" onclick="triggerFileUpload('gauge')">
+                            📁 Tải ảnh từ thiết bị
+                        </button>
+                        <input type="file" id="gauge-file-input" accept="image/*" style="display: none;" onchange="handleFileUpload('gauge', this)">
+                        <button id="gauge-capture-btn" class="capture-btn" onclick="captureImage('gauge')" style="display: none;">
+                            📸 Chụp
+                        </button>
+                        <button id="gauge-retake-btn" class="retake-btn" onclick="retakeImage('gauge')" style="display: none;">
+                            🔄 Chụp lại
+                        </button>
+                    </div>
+                </div>
+
+                <button id="gauge-analyze-btn" class="analyze-btn" onclick="analyzeImage('gauge')" style="display: none;">
+                    🔍 Phân tích đồng hồ
+                </button>
+
+                <div id="gauge-loading" class="loading" style="display: none;">
+                    <div class="spinner"></div>
+                    <p>Đang phân tích...</p>
+                </div>
+
+                <div id="gauge-results" class="results" style="display: none;"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inspection Management System</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🔍 Hệ Thống Quản Lý Kiểm Tra</h1>
+        </header>
+
+        <main>
+            <form id="inspectionForm" class="inspection-form">
+                <div class="form-group">
+                    <label for="location">
+                        <i class="icon">📍</i>
+                        Địa điểm kiểm tra (Inspection Location)
+                    </label>
+                    <input type="text" id="location" name="location" placeholder="Nhập địa điểm kiểm tra..." required>
+                </div>
+
+                <div class="form-group">
+                    <label for="itemDetails">
+                        <i class="icon">📋</i>
+                        Hạng mục & Chi tiết kiểm tra (Inspection Item & Details)
+                    </label>
+                    <textarea id="itemDetails" name="itemDetails" rows="4" placeholder="Mô tả chi tiết hạng mục cần kiểm tra..." required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="methodStandards">
+                        <i class="icon">⚖️</i>
+                        Phương pháp & Tiêu chuẩn kiểm tra (Inspection Method & Standards)
+                    </label>
+                    <textarea id="methodStandards" name="methodStandards" rows="4" placeholder="Mô tả phương pháp và tiêu chuẩn áp dụng..." required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="imageUpload">
+                        <i class="icon">🖼️</i>
+                        Thêm ảnh từ thư viện
+                    </label>
+                    <div class="image-upload-container">
+                        <input type="file" id="imageUpload" name="imageUpload" accept="image/*" multiple>
+                        <button type="button" class="btn btn-secondary" onclick="document.getElementById('imageUpload').click()">
+                            📷 Chọn ảnh từ thư viện
+                        </button>
+                    </div>
+                </div>
+
+                <div class="image-preview" id="imagePreview">
+                    <!-- Images will be displayed here -->
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn-primary" id="callApiBtn">
+                        🚀 Gọi API
+                    </button>
+                    <button type="reset" class="btn btn-secondary">
+                        🔄 Đặt lại
+                    </button>
+                </div>
+            </form>
+
+            <div class="result-section" id="resultSection" style="display: none;">
+                <h3>📊 Kết quả từ API</h3>
+                <div class="result-content" id="resultContent">
+                    <!-- API results will be displayed here -->
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="/static/js/script.js"></script>
+</body>
+</html>

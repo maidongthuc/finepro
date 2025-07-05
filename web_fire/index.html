@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Photo Capture & Select</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-camera"></i> Photo Capture & Select</h1>
+            <p>Take photos with your camera or select from your device</p>
+        </header>
+
+        <main>
+            <!-- Camera Section -->
+            <section class="camera-section">
+                <div class="camera-container">
+                    <video id="video" autoplay playsinline></video>
+                    <canvas id="canvas" style="display: none;"></canvas>
+                </div>
+                
+                <div class="camera-controls">
+                    <button id="startCamera" class="btn btn-primary">
+                        <i class="fas fa-video"></i> Start Camera
+                    </button>
+                    <button id="capturePhoto" class="btn btn-success" disabled>
+                        <i class="fas fa-camera"></i> Take Photo
+                    </button>
+                    <button id="stopCamera" class="btn btn-danger" disabled>
+                        <i class="fas fa-stop"></i> Stop Camera
+                    </button>
+                </div>
+            </section>
+
+            <!-- File Upload Section -->
+            <section class="upload-section">
+                <div class="upload-container">
+                    <input type="file" id="fileInput" accept="image/*" multiple>
+                    <label for="fileInput" class="upload-label">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <span>Click to select photos or drag & drop</span>
+                    </label>
+                </div>
+            </section>
+
+            <!-- Photo Gallery Section -->
+            <section class="gallery-section">
+                <h2><i class="fas fa-images"></i> Photo Gallery</h2>
+                <div id="photoGallery" class="photo-gallery">
+                    <!-- Photos will be displayed here -->
+                </div>
+                <div class="gallery-controls">
+                    <button id="clearGallery" class="btn btn-warning">
+                        <i class="fas fa-trash"></i> Clear All
+                    </button>
+                    <button id="downloadAll" class="btn btn-info">
+                        <i class="fas fa-download"></i> Download All
+                    </button>
+                </div>
+            </section>
+        </main>
+
+        <!-- Photo Modal -->
+        <div id="photoModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <img id="modalImage" src="" alt="Full size photo">
+                <div class="modal-controls">
+                    <button id="downloadSingle" class="btn btn-primary">
+                        <i class="fas fa-download"></i> Download
+                    </button>
+                    <button id="deleteSingle" class="btn btn-danger">
+                        <i class="fas fa-trash"></i> Delete
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

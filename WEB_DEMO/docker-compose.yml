@@ -1,0 +1,57 @@
+version: '3.8'
+
+services:
+  web:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    environment:
+      - FLASK_DEBUG=False
+      - EXTERNAL_API_URL=http://host.docker.internal:8000/predict_image/
+      - EXTERNAL_API_TIMEOUT=30
+      - MAX_CONTENT_LENGTH=16777216
+    volumes:
+      # Mount cho development (comment out cho production)
+      - ./static:/app/static:ro
+      - ./templates:/app/templates:ro
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - app-network
+
+  # Production service với optimized Dockerfile
+  web-prod:
+    build:
+      context: .
+      dockerfile: Dockerfile.production
+    ports:
+      - "5001:5000"
+    environment:
+      - FLASK_DEBUG=False
+      - EXTERNAL_API_URL=http://host.docker.internal:8000/predict_image/
+      - EXTERNAL_API_TIMEOUT=30
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - app-network
+    profiles:
+      - production
+
+networks:
+  app-network:
+    driver: bridge
+
+# Uncomment nếu cần database trong tương lai
+# volumes:
+#   postgres_data:

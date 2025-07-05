@@ -1,0 +1,18 @@
+# Flask framework
+Flask==3.0.0
+Werkzeug==3.0.1
+
+# HTTP requests cho external API
+requests==2.31.0
+
+# Environment variables
+python-dotenv==1.0.0
+
+# AI/ML libraries
+langchain-google-genai==1.0.10
+
+# Production WSGI server
+gunicorn==21.2.0
+
+# JSON handling (thường đã có sẵn trong Python)
+# Thêm các dependencies khác nếu cần thiết
