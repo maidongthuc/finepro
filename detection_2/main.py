@@ -42,9 +42,12 @@ def create_item(object_detection: Object_Detection):
 @app.post("/upload_image/")
 async def upload_image(file: UploadFile = File(...), request: Request = None):
     try:
-        # Check if file is an image
-        if not file.content_type.startswith('image/'):
-            raise HTTPException(status_code=400, detail="File must be an image")
+        # Check file extension instead of content-type
+        allowed_extensions = ['.jpg', '.jpeg', '.png', '.gif', '.bmp', '.webp']
+        file_extension = os.path.splitext(file.filename)[1].lower()
+        
+        if file_extension not in allowed_extensions:
+            raise HTTPException(status_code=400, detail="File must be an image (jpg, jpeg, png, gif, bmp, webp)")
         
         # Create images directory if it doesn't exist
         images_dir = "images"
@@ -69,53 +72,6 @@ async def upload_image(file: UploadFile = File(...), request: Request = None):
     
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error uploading image: {str(e)}")
-
-@app.post("/save_and_get_image/")
-def save_and_get_image(image_data: ImagePath, request: Request):
-    try:
-        # Check multiple possible paths for the source image
-        source_paths = [
-            image_data.image_path,  # Original path
-            os.path.join(os.getcwd(), image_data.image_path),  # Relative to current working directory
-            os.path.join(os.getcwd(), os.path.basename(image_data.image_path)),  # Just filename in current dir
-            os.path.join("images", os.path.basename(image_data.image_path))  # Check if already in images folder
-        ]
-        
-        source_image_path = None
-        for path in source_paths:
-            if os.path.exists(path):
-                source_image_path = path
-                break
-        
-        if source_image_path is None:
-            raise HTTPException(status_code=404, detail=f"Source image not found in any of these paths: {source_paths}")
-        
-        # Create images directory if it doesn't exist
-        images_dir = "images"
-        if not os.path.exists(images_dir):
-            os.makedirs(images_dir)
-        
-        # Get filename from the source path
-        filename = os.path.basename(image_data.image_path)
-        
-        # Destination path
-        destination_path = os.path.join(images_dir, filename)
-        
-        # Copy the image to images folder
-        shutil.copy2(source_image_path, destination_path)
-        
-        # Get the base URL from the request
-        base_url = f"{request.url.scheme}://{request.url.netloc}"
-        image_url = f"{base_url}/images/{filename}"
-        
-        return {
-            "message": "success",
-            "url": image_url,
-            "filename": filename
-        }
-    
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error saving image: {str(e)}")
 
 @app.get("/images/{filename}")
 def get_image(filename: str):
