@@ -42,9 +42,22 @@ def create_item(object_detection: Object_Detection):
 @app.post("/save_and_get_image/")
 def save_and_get_image(image_data: ImagePath, request: Request):
     try:
-        # Check if source image exists
-        if not os.path.exists(image_data.image_path):
-            raise HTTPException(status_code=404, detail="Source image not found")
+        # Check multiple possible paths for the source image
+        source_paths = [
+            image_data.image_path,  # Original path
+            os.path.join(os.getcwd(), image_data.image_path),  # Relative to current working directory
+            os.path.join(os.getcwd(), os.path.basename(image_data.image_path)),  # Just filename in current dir
+            os.path.join("images", os.path.basename(image_data.image_path))  # Check if already in images folder
+        ]
+        
+        source_image_path = None
+        for path in source_paths:
+            if os.path.exists(path):
+                source_image_path = path
+                break
+        
+        if source_image_path is None:
+            raise HTTPException(status_code=404, detail=f"Source image not found in any of these paths: {source_paths}")
         
         # Create images directory if it doesn't exist
         images_dir = "images"
@@ -58,7 +71,7 @@ def save_and_get_image(image_data: ImagePath, request: Request):
         destination_path = os.path.join(images_dir, filename)
         
         # Copy the image to images folder
-        shutil.copy2(image_data.image_path, destination_path)
+        shutil.copy2(source_image_path, destination_path)
         
         # Get the base URL from the request
         base_url = f"{request.url.scheme}://{request.url.netloc}"
