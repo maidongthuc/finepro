@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException, Request
+from fastapi import FastAPI, HTTPException, Request, UploadFile, File
 from pydantic import BaseModel
 import uvicorn
 from src.llm_gemini import llm
@@ -38,6 +38,37 @@ def create_item(object_detection: Object_Detection):
         return {
             "content": ai_msg.content
         }
+
+@app.post("/upload_image/")
+async def upload_image(file: UploadFile = File(...), request: Request = None):
+    try:
+        # Check if file is an image
+        if not file.content_type.startswith('image/'):
+            raise HTTPException(status_code=400, detail="File must be an image")
+        
+        # Create images directory if it doesn't exist
+        images_dir = "images"
+        if not os.path.exists(images_dir):
+            os.makedirs(images_dir)
+        
+        # Save uploaded file
+        file_path = os.path.join(images_dir, file.filename)
+        with open(file_path, "wb") as buffer:
+            content = await file.read()
+            buffer.write(content)
+        
+        # Get the base URL from the request
+        base_url = f"{request.url.scheme}://{request.url.netloc}"
+        image_url = f"{base_url}/images/{file.filename}"
+        
+        return {
+            "message": "success",
+            "url": image_url,
+            "filename": file.filename
+        }
+    
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error uploading image: {str(e)}")
 
 @app.post("/save_and_get_image/")
 def save_and_get_image(image_data: ImagePath, request: Request):
